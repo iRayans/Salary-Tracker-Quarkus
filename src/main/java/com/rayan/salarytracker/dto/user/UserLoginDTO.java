@@ -9,8 +9,8 @@ public class UserLoginDTO {
         this.password = password;
     }
 
-    public UserLoginDTO(String password) {
-        this.password = password;
+    public UserLoginDTO() {
+
     }
 
     @NotEmpty(message = "Email must not be empty")
@@ -34,5 +34,13 @@ public class UserLoginDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "UserLoginDTO{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

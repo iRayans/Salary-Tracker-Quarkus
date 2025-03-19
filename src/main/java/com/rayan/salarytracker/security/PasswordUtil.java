@@ -1,6 +1,7 @@
 package com.rayan.salarytracker.security;
 
 import org.mindrot.jbcrypt.BCrypt;
+
 /**
  * Utility Class that performs encryption of plain text
  * passwords and checks the hashed and plain password using JBCrypt.

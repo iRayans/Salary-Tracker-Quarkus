@@ -48,6 +48,14 @@ public class UserService {
 
     }
 
+    public UserReadOnlyDTO findUserByEmail(String email) throws EntityNotFoundException {
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            throw new EntityNotFoundException("User", "User with email '" + email + "' not found.");
+        }
+        return mapper.mapToUserReadOnlyDTO(user);
+    }
+
     public List<User> getUsers() {
         return userRepository.listAll();
     }
@@ -63,5 +71,9 @@ public class UserService {
 
     public Boolean isEmailExists(String email) {
         return userRepository.isEmailExists(email);
+    }
+
+    public Boolean isUserValid(String email, String password) {
+        return userRepository.isUserValid(email, password);
     }
 }

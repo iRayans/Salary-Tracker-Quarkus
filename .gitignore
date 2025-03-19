@@ -43,3 +43,9 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+# Ignore private and public keys
+resources/privateKey.pem
+resources/publicKey.pem
+
+logs
