@@ -16,8 +16,7 @@ public class SalaryInsertDTO {
         this.user = user;
     }
 
-    public SalaryInsertDTO(String month) {
-        this.month = month;
+    public SalaryInsertDTO() {;
     }
 
     @NotBlank(message = "Month must not be empty")
