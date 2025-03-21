@@ -25,9 +25,8 @@ public class SalaryResource {
     SalaryService salaryService;
 
     @GET
-    @Path("/{id}")
-    public Response getSalary(@PathParam("id") Long id) throws EntityNotFoundException {
-    List<SalaryReadOnlyDTO> salary = salaryService.findById(id);
+    public Response getSalary() throws EntityNotFoundException {
+    List<SalaryReadOnlyDTO> salary = salaryService.findAllSalaries();
         return Response.status(Response.Status.OK)
                 .entity(salary)
                 .build();
