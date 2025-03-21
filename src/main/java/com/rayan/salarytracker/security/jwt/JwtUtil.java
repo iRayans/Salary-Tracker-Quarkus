@@ -22,4 +22,5 @@ public class JwtUtil {
                 .expiresIn(Duration.ofHours(2)) // Token valid for 2 hours
                 .sign();
     }
+
 }
