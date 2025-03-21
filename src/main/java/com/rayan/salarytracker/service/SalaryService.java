@@ -10,7 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SalaryService {
@@ -23,7 +22,7 @@ public class SalaryService {
     public List<SalaryReadOnlyDTO> findById(Long id) throws EntityNotFoundException {
         List<Salary> salaries = salaryRepository.findSalaryByUserId(id, 2025);
         List<SalaryReadOnlyDTO> salaryReadOnlyDTO = salaries.stream().map(mapper::mapToSalaryReadOnlyDTO).toList();
-        if (salaries == null || salaries.isEmpty()) {
+        if (salaries.isEmpty()) {
             throw new EntityNotFoundException("Salary", "Salary not found");
         }
 
