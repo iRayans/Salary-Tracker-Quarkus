@@ -84,4 +84,17 @@ public class SalaryReadOnlyDTO {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "SalaryReadOnlyDTO{" +
+                "id=" + id +
+                ", month='" + month + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", year=" + year +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

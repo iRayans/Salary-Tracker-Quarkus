@@ -70,7 +70,6 @@ public class Salary {
                 ", amount=" + amount +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", user=" + user +
                 '}';
     }
 
