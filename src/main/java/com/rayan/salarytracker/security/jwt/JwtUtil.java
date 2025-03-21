@@ -12,12 +12,12 @@ import java.util.Set;
  */
 
 public class JwtUtil {
-    public static String generateToken(String email, String role) {
+    public static String generateToken(String email, Long userId,String role) {
         Set<String> roles = new HashSet<>();
         roles.add(role);
-
         return Jwt.issuer("my-auth-service")
                 .subject(email)
+                .claim("userId", userId)
                 .groups(roles)
                 .expiresIn(Duration.ofHours(2)) // Token valid for 2 hours
                 .sign();
