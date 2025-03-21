@@ -56,7 +56,6 @@ public class UserResource {
     @Path("/login")
     @PermitAll
     public Response loginUser(UserLoginDTO userLoginDTO) throws EntityInvalidArgumentsException, EntityNotFoundException {
-        System.out.println("============ inside login ============");
         // Authentication
         boolean isAuthenticated = authenticationProvider.authenticate(userLoginDTO);
         if (!isAuthenticated) {
@@ -67,8 +66,8 @@ public class UserResource {
         UserReadOnlyDTO userReadOnlyDTO = userService.findUserByEmail(userLoginDTO.getEmail());
         String email = userReadOnlyDTO.getEmail();
         String role = userReadOnlyDTO.getRole();
-        String token = JwtUtil.generateToken(email, role);
-        System.out.println("Generated Token: " + token);
+        Long userID = userReadOnlyDTO.getId();
+        String token = JwtUtil.generateToken(email,userID, role);
 
         AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO(token, userReadOnlyDTO);
         return Response.status(Response.Status.OK).entity(authenticationResponseDTO).build();
