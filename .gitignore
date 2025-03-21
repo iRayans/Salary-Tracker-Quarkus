@@ -48,4 +48,4 @@ nb-configuration.xml
 resources/privateKey.pem
 resources/publicKey.pem
 
-logs
+logs/
