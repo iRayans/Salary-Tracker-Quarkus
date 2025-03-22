@@ -1,6 +1,7 @@
-package com.rayan.salarytracker.service;
+package com.rayan.salarytracker.service.impl;
 
 
+import com.rayan.salarytracker.core.exception.EntityAlreadyExistsException;
 import com.rayan.salarytracker.core.exception.EntityInvalidArgumentsException;
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
@@ -9,9 +10,12 @@ import com.rayan.salarytracker.dto.salary.SalaryUpdateRequest;
 import com.rayan.salarytracker.mapper.Mapper;
 import com.rayan.salarytracker.model.Salary;
 import com.rayan.salarytracker.model.User;
-import com.rayan.salarytracker.repository.SalaryRepository;
-import com.rayan.salarytracker.repository.UserRepository;
+import com.rayan.salarytracker.repository.IUserRepository;
+import com.rayan.salarytracker.repository.impl.SalaryRepository;
+import com.rayan.salarytracker.repository.impl.UserRepository;
 import com.rayan.salarytracker.security.LoggedInUser;
+import com.rayan.salarytracker.service.ISalaryService;
+import com.rayan.salarytracker.service.IUserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -22,7 +26,7 @@ import java.util.*;
 
 @ApplicationScoped
 @Transactional
-public class SalaryService implements IUserService {
+public class SalaryService implements ISalaryService {
     private static final Logger LOGGER = Logger.getLogger(SalaryService.class);
 
     private static final List<String> VALID_MONTHS = List.of(
@@ -36,7 +40,7 @@ public class SalaryService implements IUserService {
     @Inject
     LoggedInUser loggedInUser;
     @Inject
-    UserRepository userRepository;
+    IUserRepository userRepository;
 
 
     @Override
@@ -62,16 +66,21 @@ public class SalaryService implements IUserService {
     }
 
     @Override
-    public SalaryReadOnlyDTO createSalary(SalaryInsertDTO salaryInsertDTO) throws EntityInvalidArgumentsException, EntityNotFoundException {
+    public SalaryReadOnlyDTO createSalary(SalaryInsertDTO salaryInsertDTO) throws EntityInvalidArgumentsException, EntityAlreadyExistsException {
         LOGGER.info("Saving Salary...");
-        User user = userRepository.findById(loggedInUser.getUserId());
-        salaryInsertDTO.setYear(LocalDateTime.now().getYear());
-        salaryInsertDTO.setUser(user);
+        // set current year.
+        User user = userRepository.findUserByEmail(loggedInUser.getUserEmail());
         Salary salary = mapper.mapToSalary(salaryInsertDTO);
-
+        salary.setYear(LocalDateTime.now().getYear());
+        salary.setUser(user);
         if (!validateMonth(salaryInsertDTO.getMonth())) {
             LOGGER.error("Invalid month: " + salaryInsertDTO.getMonth());
             throw new EntityInvalidArgumentsException("Salary", "Enter Valid Moth Only");
+        }
+        // Check if the month already exists
+        if (salaryRepository.salaryExistsForUserInMonthAndYear(salary.getUser().getId(), salaryInsertDTO.getMonth(), salary.getYear())) {
+            LOGGER.error("Salary for month {} already exists." + salaryInsertDTO.getMonth());
+            throw new EntityAlreadyExistsException("Salary", "Salary with month " + salaryInsertDTO.getMonth() + " already exists.");
         }
         LOGGER.info("Salary saved: " + salary.toString());
         salaryRepository.persist(salary);
