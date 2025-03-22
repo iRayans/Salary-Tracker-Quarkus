@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
 
-
 public class SalaryInsertDTO {
 
     public SalaryInsertDTO(String month, String description, int amount, int year, User user) {

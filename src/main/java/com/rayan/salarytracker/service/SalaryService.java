@@ -1,10 +1,12 @@
 package com.rayan.salarytracker.service;
 
 
+import com.rayan.salarytracker.core.exception.AppServerException;
 import com.rayan.salarytracker.core.exception.EntityInvalidArgumentsException;
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
 import com.rayan.salarytracker.dto.salary.SalaryReadOnlyDTO;
+import com.rayan.salarytracker.dto.salary.SalaryUpdateRequest;
 import com.rayan.salarytracker.mapper.Mapper;
 import com.rayan.salarytracker.model.Salary;
 import com.rayan.salarytracker.model.User;
@@ -55,6 +57,17 @@ public class SalaryService implements IUserService {
     }
 
     @Override
+    public SalaryReadOnlyDTO findSalaryById(Long id) throws EntityNotFoundException {
+        LOGGER.info("Find salary by id: " + id);
+        Salary salary = salaryRepository.findById(id);
+        if (salary == null) {
+            throw new EntityNotFoundException("Salary", "Salary not found");
+        }
+        LOGGER.info("Found " + salary);
+        return mapper.mapToSalaryReadOnlyDTO(salary);
+    }
+
+    @Override
     public SalaryReadOnlyDTO createSalary(SalaryInsertDTO salaryInsertDTO) throws EntityInvalidArgumentsException, EntityNotFoundException {
         LOGGER.info("Saving Salary...");
         User user = userRepository.findById(loggedInUser.getUserId());
@@ -71,8 +84,28 @@ public class SalaryService implements IUserService {
         return mapper.mapToSalaryReadOnlyDTO(salary);
     }
 
+    @Override
+    public SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequest salaryUpdateRequest) throws EntityNotFoundException {
+        // get existing Salary
+        LOGGER.info("Updating Salary...");
+        Salary salary = salaryRepository.findById(salaryId);
+        if(salary == null) {
+            LOGGER.error("Salary not found for id: " + salaryId);
+            throw new EntityNotFoundException("Salary", "Salary not found");
+        }
+        updateFields(salary, salaryUpdateRequest);
+        LOGGER.info("Salary updated: " + salaryUpdateRequest);
+        return mapper.mapToSalaryReadOnlyDTO(salary);
+    }
+
     private boolean validateMonth(String month) {
         return VALID_MONTHS.contains(month);
     }
 
+    private void updateFields(Salary existing, SalaryUpdateRequest updated){
+        LOGGER.info("Updating salary fields...");
+        existing.setAmount(updated.getAmount() != 0 ? updated.getAmount() : existing.getAmount());
+        existing.setDescription(updated.getDescription() != null ? updated.getDescription() : existing.getDescription());
+
+    }
 }
