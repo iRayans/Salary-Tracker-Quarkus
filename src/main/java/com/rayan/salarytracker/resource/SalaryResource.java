@@ -60,5 +60,11 @@ public class SalaryResource {
                 .build();
     }
 
+    @DELETE
+    @Path("/{salaryId}")
+    public Response deleteSalary(@PathParam("salaryId") Long salaryId) throws EntityNotFoundException {
+        salaryService.deleteSalaryById(salaryId);
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
 }
 

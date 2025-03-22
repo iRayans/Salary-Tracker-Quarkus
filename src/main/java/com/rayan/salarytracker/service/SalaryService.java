@@ -54,12 +54,9 @@ public class SalaryService implements IUserService {
     }
 
     @Override
-    public SalaryReadOnlyDTO findSalaryById(Long id) throws EntityNotFoundException {
-        LOGGER.info("Find salary by id: " + id);
-        Salary salary = salaryRepository.findById(id);
-        if (salary == null) {
-            throw new EntityNotFoundException("Salary", "Salary not found");
-        }
+    public SalaryReadOnlyDTO findSalaryById(Long salaryId) throws EntityNotFoundException {
+        LOGGER.info("Find salary by id: " + salaryId);
+        Salary salary = findById(salaryId);
         LOGGER.info("Found " + salary);
         return mapper.mapToSalaryReadOnlyDTO(salary);
     }
@@ -85,21 +82,37 @@ public class SalaryService implements IUserService {
     public SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequest salaryUpdateRequest) throws EntityNotFoundException {
         // get existing Salary
         LOGGER.info("Updating Salary...");
-        Salary salary = salaryRepository.findById(salaryId);
-        if(salary == null) {
-            LOGGER.error("Salary not found for id: " + salaryId);
-            throw new EntityNotFoundException("Salary", "Salary not found");
-        }
+        Salary salary = findById(salaryId);
         updateFields(salary, salaryUpdateRequest);
         LOGGER.info("Salary updated: " + salaryUpdateRequest);
         return mapper.mapToSalaryReadOnlyDTO(salary);
+    }
+
+    @Override
+    public void deleteSalaryById(Long salaryId) throws EntityNotFoundException {
+        Salary salary = findById(salaryId);
+        LOGGER.info("Deleting Salary...");
+        salaryRepository.delete(salary);
+    }
+
+
+    // ######### Helper methods #########
+
+    private Salary findById(Long salaryId) throws EntityNotFoundException {
+        Salary salary = salaryRepository.findById(salaryId);
+        if (salary == null) {
+            LOGGER.error("Salary not found for id: " + salaryId);
+            throw new EntityNotFoundException("Salary", "Salary not found");
+        }
+        LOGGER.info("Found " + salary);
+        return salary;
     }
 
     private boolean validateMonth(String month) {
         return VALID_MONTHS.contains(month);
     }
 
-    private void updateFields(Salary existing, SalaryUpdateRequest updated){
+    private void updateFields(Salary existing, SalaryUpdateRequest updated) {
         LOGGER.info("Updating salary fields...");
         existing.setAmount(updated.getAmount() != 0 ? updated.getAmount() : existing.getAmount());
         existing.setDescription(updated.getDescription() != null ? updated.getDescription() : existing.getDescription());

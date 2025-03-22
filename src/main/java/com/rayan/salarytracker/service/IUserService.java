@@ -13,9 +13,12 @@ import java.util.List;
 public interface IUserService {
 
     List<SalaryReadOnlyDTO> findAllSalaries() throws EntityNotFoundException;
+
     SalaryReadOnlyDTO findSalaryById(Long id) throws EntityNotFoundException;
+
     SalaryReadOnlyDTO createSalary(SalaryInsertDTO salaryInsertDTO) throws EntityInvalidArgumentsException, EntityNotFoundException;
 
     SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequest salaryUpdateRequest) throws EntityNotFoundException;
 
+    void deleteSalaryById(Long salaryId) throws EntityNotFoundException;
 }
