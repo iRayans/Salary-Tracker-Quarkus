@@ -12,7 +12,7 @@ import com.rayan.salarytracker.dto.user.UserLoginDTO;
 import com.rayan.salarytracker.dto.user.UserReadOnlyDTO;
 import com.rayan.salarytracker.model.User;
 import com.rayan.salarytracker.security.jwt.JwtUtil;
-import com.rayan.salarytracker.service.UserService;
+import com.rayan.salarytracker.service.impl.UserService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

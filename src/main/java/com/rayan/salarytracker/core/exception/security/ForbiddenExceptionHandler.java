@@ -1,6 +1,5 @@
 package com.rayan.salarytracker.core.exception.security;
 
-import com.rayan.salarytracker.service.UserService;
 import io.quarkus.security.ForbiddenException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

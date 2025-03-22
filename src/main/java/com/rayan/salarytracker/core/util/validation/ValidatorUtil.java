@@ -2,7 +2,7 @@ package com.rayan.salarytracker.core.util.validation;
 
 import com.rayan.salarytracker.core.exception.EntityAlreadyExistsException;
 import com.rayan.salarytracker.dto.user.UserInsertDTO;
-import com.rayan.salarytracker.service.UserService;
+import com.rayan.salarytracker.service.impl.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
