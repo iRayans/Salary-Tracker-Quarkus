@@ -1,7 +1,6 @@
 package com.rayan.salarytracker.service;
 
 
-import com.rayan.salarytracker.core.exception.AppServerException;
 import com.rayan.salarytracker.core.exception.EntityInvalidArgumentsException;
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
@@ -15,9 +14,7 @@ import com.rayan.salarytracker.repository.UserRepository;
 import com.rayan.salarytracker.security.LoggedInUser;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.json.JsonNumber;
 import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import java.time.LocalDateTime;
