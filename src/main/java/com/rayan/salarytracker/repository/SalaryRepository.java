@@ -7,8 +7,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 @ApplicationScoped
-public class SalaryRepository implements PanacheRepository<Salary> {
+public class SalaryRepository implements PanacheRepository<Salary> , ISalaryRepository{
 
+    @Override
     public List<Salary> findSalaryByUserId(Long userId,int year) {
         if(year < 0 ){
             year = 2025;
