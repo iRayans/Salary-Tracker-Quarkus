@@ -5,5 +5,6 @@ import com.rayan.salarytracker.model.Salary;
 import java.util.List;
 
 public interface ISalaryRepository {
-    public List<Salary> findSalaryByUserId(Long userId, int year);
+    List<Salary> findSalaryByUserId(Long userId, int year);
+    Boolean salaryExistsForUserInMonthAndYear(Long userId, String month, int year);
 }

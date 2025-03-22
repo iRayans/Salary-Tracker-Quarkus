@@ -7,12 +7,10 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class SalaryInsertDTO {
 
-    public SalaryInsertDTO(String month, String description, int amount, int year, User user) {
+    public SalaryInsertDTO(String month, String description, int amount) {
         this.month = month;
         this.description = description;
         this.amount = amount;
-        this.year = year;
-        this.user = user;
     }
 
     public SalaryInsertDTO() {;
@@ -26,9 +24,6 @@ public class SalaryInsertDTO {
 
     @PositiveOrZero(message = "Value must be positive or zero")
     private int amount;
-
-    private int year;
-    private User user;
 
 
     public String getMonth() {
@@ -53,21 +48,5 @@ public class SalaryInsertDTO {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

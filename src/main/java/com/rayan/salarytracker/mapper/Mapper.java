@@ -39,12 +39,12 @@ public class Mapper {
     public Salary mapToSalary(SalaryInsertDTO salaryInsertDTO) {
         return new Salary(null,
                 salaryInsertDTO.getMonth(),
-                salaryInsertDTO.getYear(),
+                0,
                 salaryInsertDTO.getDescription(),
                 salaryInsertDTO.getAmount(),
                 null,
                 null,
-                salaryInsertDTO.getUser());
+                null);
     }
 
     public SalaryReadOnlyDTO mapToSalaryReadOnlyDTO(Salary salary) {
