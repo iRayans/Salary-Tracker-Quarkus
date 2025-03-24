@@ -2,6 +2,7 @@ package com.rayan.salarytracker.model;
 
 import com.rayan.salarytracker.core.enums.BudgetRuleAllocation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,42 +19,53 @@ public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
+    @NotBlank(message = "Description must not be empty")
+    @Column(name = "description")
+    private String description;
     @Column(name = "amount")
-    private Integer amount;
-
+    private int amount;
+    // Not needed for now
+//    @Column(name = "category")
+//    private String category;
+    @Enumerated(EnumType.STRING)
+    private BudgetRuleAllocation budgetRuleAllocation;
+    @Column(name = "bank")
+    private String bank;
     @Column(name = "status")
     private Boolean status;
-
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private Timestamp createdAt;
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @Size(max = 255)
-    @Column(name = "bank")
-    private String bank;
-
-    @Size(max = 255)
-    @Column(name = "description")
-    private String description;
-
-    @Enumerated(EnumType.STRING)
-    private BudgetRuleAllocation budgetRuleAllocation;
-
-
     ///////////////////////////////
     // Relations start from here //
     /// ////////////////////////////
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "salary_id", nullable = false)
-    private com.rayan.salarytracker.model.Salary salary;
 
+    // Many Expenses mapped to a single Salary.
+    // The fetch Type set to lazy since we don't need to fetch user object with the response.
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "salary_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Salary salary;
+
+    public Expense() {
+    }
+
+    public Expense(Long id, Integer amount, Boolean status, Timestamp createdAt, Timestamp updatedAt, String bank, String description, BudgetRuleAllocation budgetRuleAllocation, Salary salary) {
+        this.id = id;
+        this.amount = amount;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.bank = bank;
+        this.description = description;
+        this.budgetRuleAllocation = budgetRuleAllocation;
+        this.salary = salary;
+    }
 
     public Long getId() {
         return id;
