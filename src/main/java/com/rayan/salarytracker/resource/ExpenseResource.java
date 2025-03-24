@@ -31,8 +31,8 @@ public class ExpenseResource {
     }
 
     @POST
-    @Path("/{id}")
-    public Response addExpense(@PathParam("id")Long salaryId, ExpenseInsertDTO expenseInsertDTO) throws EntityNotFoundException {
+    @Path("/{salaryId}")
+    public Response addExpense(@PathParam("salaryId")Long salaryId, ExpenseInsertDTO expenseInsertDTO) throws EntityNotFoundException {
         ExpenseReadOnlyDTO expenseReadOnlyDTO = expenseService.createExpense(expenseInsertDTO, salaryId);
         System.out.println(expenseInsertDTO + " ********");
         return Response.status(Response.Status.CREATED)
@@ -42,8 +42,8 @@ public class ExpenseResource {
 
     @GET
     @Path("/{salaryId}/{expenseId}")
-    public Response getExpense(@PathParam("expenseId") Long expenseId) throws EntityNotFoundException {
-        ExpenseReadOnlyDTO expenseReadOnlyDTO = expenseService.getExpenseById(expenseId);
+    public Response getExpense(@PathParam("salaryId") Long salaryId , @PathParam("expenseId") Long expenseId) throws EntityNotFoundException, NotAuthorizedException {
+        ExpenseReadOnlyDTO expenseReadOnlyDTO = expenseService.getExpenseById(salaryId,expenseId);
         return Response.status(Response.Status.OK).entity(expenseReadOnlyDTO).build();
     }
 }

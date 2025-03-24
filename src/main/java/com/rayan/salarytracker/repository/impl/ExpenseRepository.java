@@ -10,12 +10,17 @@ import java.util.Optional;
 @ApplicationScoped
 public class ExpenseRepository implements PanacheRepository<Expense> {
 
-    public List<Expense> getExpensesBySalaryId(Long salaryId, Long userId){
+    public List<Expense> getExpensesBySalaryId(Long salaryId, Long userId) {
         return find("salary.id = ?1 AND salary.user.id = ?2", salaryId, userId).list();
     }
 
-    public Optional<Expense> getExpenseBySalaryId(Long salaryId, Long expenseId){
-        return find("FROM Expense e JOIN FETCH e.salary s WHERE s.id = ?1 AND e.id = ?2", salaryId, expenseId).firstResultOptional();
 
+    public Optional<Expense> getExpenseBySalaryId(Long salaryId, Long expenseId, Long userId) {
+        return find("""
+                    FROM Expense e
+                    JOIN FETCH e.salary s
+                    WHERE e.id = ?1 AND s.id = ?2 AND s.user.id = ?3
+                """, expenseId, salaryId, userId).firstResultOptional();
     }
 }
+
