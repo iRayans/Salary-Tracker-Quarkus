@@ -1,11 +1,15 @@
 package com.rayan.salarytracker.mapper;
 
 
+import com.rayan.salarytracker.core.enums.BudgetRuleAllocation;
 import com.rayan.salarytracker.core.enums.RoleType;
+import com.rayan.salarytracker.dto.expense.ExpenseInsertDTO;
+import com.rayan.salarytracker.dto.expense.ExpenseReadOnlyDTO;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
 import com.rayan.salarytracker.dto.salary.SalaryReadOnlyDTO;
 import com.rayan.salarytracker.dto.user.UserInsertDTO;
 import com.rayan.salarytracker.dto.user.UserReadOnlyDTO;
+import com.rayan.salarytracker.model.Expense;
 import com.rayan.salarytracker.model.Salary;
 
 
@@ -13,6 +17,7 @@ import com.rayan.salarytracker.model.User;
 import com.rayan.salarytracker.security.PasswordUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import static com.rayan.salarytracker.core.enums.BudgetRuleAllocation.*;
 
 
 @ApplicationScoped
@@ -57,36 +62,36 @@ public class Mapper {
                 salary.getUpdatedAt());
     }
 
-//
-//    // ======================================
-//    // =          Expense Mapper            =
-//    // ======================================
-//    public Expense mapToExpense(ExpenseInsertDTO expenseInsertDTO) {
-//        return new Expense(
-//                null,
-//                expenseInsertDTO.getDescription(),
-//                expenseInsertDTO.getAmount(),
-//                BudgetRuleAllocation.valueOf(expenseInsertDTO.getBudgetRule()),
-//                expenseInsertDTO.getBank(),
-//                expenseInsertDTO.getStatus(),
-//                null,
-//                null,
-//                expenseInsertDTO.getSalary()
-//        );
-//    }
-//
-//    public ExpenseReadOnlyDTO mapToExpenseReadOnlyDTO(Expense expense) {
-//        return new ExpenseReadOnlyDTO(
-//                expense.getId(),
-//                expense.getDescription(),
-//                expense.getAmount(),
-//                expense.getBudgetRuleAllocation().name(),
-//                expense.getStatus(),
-//                expense.getBank(),
-//                expense.getCreatedAt(),
-//                expense.getUpdatedAt()
-//        );
-//    }
+
+    // ======================================
+    // =          Expense Mapper            =
+    // ======================================
+    public Expense mapToExpense(ExpenseInsertDTO expenseInsertDTO) {
+        return new Expense(
+                null,
+                expenseInsertDTO.getAmount(),
+                expenseInsertDTO.getStatus(),
+                null,
+                null,
+                expenseInsertDTO.getBank(),
+                expenseInsertDTO.getDescription(),
+                valueOf(expenseInsertDTO.getBudgetRule()),
+                expenseInsertDTO.getSalary()
+        );
+    }
+
+    public ExpenseReadOnlyDTO mapToExpenseReadOnlyDTO(Expense expense) {
+        return new ExpenseReadOnlyDTO(
+                expense.getId(),
+                expense.getDescription(),
+                expense.getAmount(),
+                expense.getBudgetRuleAllocation().name(),
+                expense.getStatus(),
+                expense.getBank(),
+                expense.getCreatedAt(),
+                expense.getUpdatedAt()
+        );
+    }
 //
 //    // ======================================
 //    // =          Summary Mapper            =
