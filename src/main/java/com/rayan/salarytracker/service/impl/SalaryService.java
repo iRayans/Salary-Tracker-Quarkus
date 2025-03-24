@@ -6,16 +6,14 @@ import com.rayan.salarytracker.core.exception.EntityInvalidArgumentsException;
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
 import com.rayan.salarytracker.dto.salary.SalaryReadOnlyDTO;
-import com.rayan.salarytracker.dto.salary.SalaryUpdateRequest;
+import com.rayan.salarytracker.dto.salary.SalaryUpdateRequestDTO;
 import com.rayan.salarytracker.mapper.Mapper;
 import com.rayan.salarytracker.model.Salary;
 import com.rayan.salarytracker.model.User;
 import com.rayan.salarytracker.repository.IUserRepository;
 import com.rayan.salarytracker.repository.impl.SalaryRepository;
-import com.rayan.salarytracker.repository.impl.UserRepository;
 import com.rayan.salarytracker.security.LoggedInUser;
 import com.rayan.salarytracker.service.ISalaryService;
-import com.rayan.salarytracker.service.IUserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -88,7 +86,7 @@ public class SalaryService implements ISalaryService {
     }
 
     @Override
-    public SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequest salaryUpdateRequest) throws EntityNotFoundException {
+    public SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequestDTO salaryUpdateRequest) throws EntityNotFoundException {
         // get existing Salary
         LOGGER.info("Updating Salary...");
         Salary salary = findById(salaryId);
@@ -121,7 +119,7 @@ public class SalaryService implements ISalaryService {
         return VALID_MONTHS.contains(month);
     }
 
-    private void updateFields(Salary existing, SalaryUpdateRequest updated) {
+    private void updateFields(Salary existing, SalaryUpdateRequestDTO updated) {
         LOGGER.info("Updating salary fields...");
         existing.setAmount(updated.getAmount() != 0 ? updated.getAmount() : existing.getAmount());
         existing.setDescription(updated.getDescription() != null ? updated.getDescription() : existing.getDescription());

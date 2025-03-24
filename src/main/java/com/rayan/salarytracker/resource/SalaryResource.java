@@ -5,7 +5,7 @@ import com.rayan.salarytracker.core.exception.EntityInvalidArgumentsException;
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.salary.SalaryInsertDTO;
 import com.rayan.salarytracker.dto.salary.SalaryReadOnlyDTO;
-import com.rayan.salarytracker.dto.salary.SalaryUpdateRequest;
+import com.rayan.salarytracker.dto.salary.SalaryUpdateRequestDTO;
 import com.rayan.salarytracker.service.impl.SalaryService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
@@ -51,7 +51,7 @@ public class SalaryResource {
 
     @PUT
     @Path("/{salaryId}")
-    public Response updateSalary(@PathParam("salaryId") Long salaryId, SalaryUpdateRequest salaryUpdateRequest) throws EntityNotFoundException {
+    public Response updateSalary(@PathParam("salaryId") Long salaryId, SalaryUpdateRequestDTO salaryUpdateRequest) throws EntityNotFoundException {
         SalaryReadOnlyDTO salaryReadOnlyDTO = salaryService.updateSalary(salaryId,salaryUpdateRequest);
         return Response.status((Response.Status.OK))
                 .entity(salaryReadOnlyDTO)
