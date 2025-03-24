@@ -1,16 +1,16 @@
 package com.rayan.salarytracker.dto.salary;
 
-public class SalaryUpdateRequest {
+public class SalaryUpdateRequestDTO {
     private String description;
     private int amount;
 
 
-    public SalaryUpdateRequest(String description, int amount ) {
+    public SalaryUpdateRequestDTO(String description, int amount ) {
         this.description = description;
         this.amount = amount;
     }
 
-    public SalaryUpdateRequest() {
+    public SalaryUpdateRequestDTO() {
     }
 
     public String getDescription() {
