@@ -1,11 +1,9 @@
 package com.rayan.salarytracker.service.impl;
 
 import com.rayan.salarytracker.core.exception.EntityNotFoundException;
-import com.rayan.salarytracker.core.exception.security.NotAuthorizedException;
 import com.rayan.salarytracker.dto.expense.ExpenseInsertDTO;
 import com.rayan.salarytracker.dto.expense.ExpenseReadOnlyDTO;
 import com.rayan.salarytracker.dto.expense.ExpenseUpdateRequestDTO;
-import com.rayan.salarytracker.dto.salary.SalaryUpdateRequestDTO;
 import com.rayan.salarytracker.mapper.Mapper;
 import com.rayan.salarytracker.model.Expense;
 import com.rayan.salarytracker.model.Salary;
@@ -55,7 +53,7 @@ public class ExpenseService {
         return mapper.mapToExpenseReadOnlyDTO(expense);
     }
 
-    public ExpenseReadOnlyDTO getExpenseById(Long salaryId,Long expenseId) throws EntityNotFoundException, NotAuthorizedException {
+    public ExpenseReadOnlyDTO getExpenseById(Long salaryId,Long expenseId) throws EntityNotFoundException {
         LOGGER.info("Retrieving expense for id: " + expenseId);
         Expense expense = expenseRepository.getExpenseBySalaryId(salaryId,expenseId,getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Expense", "Expense: " + expenseId + " not found."));
@@ -70,6 +68,11 @@ public class ExpenseService {
         return mapper.mapToExpenseReadOnlyDTO(expense);
     }
 
+    public void deleteExpense(Long expenseId) throws EntityNotFoundException {
+        LOGGER.info("Deleting expense for id: " + expenseId);
+        Expense expense = findExpenseById(expenseId);
+        expenseRepository.delete(expense);
+    }
 
     // ######### Helper methods #########
 

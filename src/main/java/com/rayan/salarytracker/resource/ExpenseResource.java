@@ -4,6 +4,7 @@ import com.rayan.salarytracker.core.exception.EntityNotFoundException;
 import com.rayan.salarytracker.dto.expense.ExpenseInsertDTO;
 import com.rayan.salarytracker.dto.expense.ExpenseReadOnlyDTO;
 
+import com.rayan.salarytracker.dto.expense.ExpenseUpdateRequestDTO;
 import com.rayan.salarytracker.service.impl.ExpenseService;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
@@ -45,6 +46,21 @@ public class ExpenseResource {
     public Response getExpense(@PathParam("salaryId") Long salaryId , @PathParam("expenseId") Long expenseId) throws EntityNotFoundException, NotAuthorizedException {
         ExpenseReadOnlyDTO expenseReadOnlyDTO = expenseService.getExpenseById(salaryId,expenseId);
         return Response.status(Response.Status.OK).entity(expenseReadOnlyDTO).build();
+    }
+
+    @PUT
+    @Path("/{salaryId}/{expenseId}")
+    public Response updateExpense(@PathParam("expenseId") Long expenseId, ExpenseUpdateRequestDTO expenseUpdateRequestDTO) throws EntityNotFoundException {
+        ExpenseReadOnlyDTO expenseReadOnlyDTO = expenseService.updateExpense(expenseUpdateRequestDTO,expenseId);
+        return Response.status(Response.Status.OK).entity(expenseReadOnlyDTO).build();
+
+    }
+
+    @DELETE
+    @Path("/{salaryId}/{expenseId}")
+    public Response deleteExpense(@PathParam("expenseId") Long expenseId) throws EntityNotFoundException {
+        expenseService.deleteExpense(expenseId);
+        return Response.status(Response.Status.OK).build();
     }
 }
 
