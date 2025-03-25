@@ -42,10 +42,10 @@ public class SalaryService implements ISalaryService {
 
 
     @Override
-    public List<SalaryReadOnlyDTO> findAllSalaries() throws EntityNotFoundException {
+    public List<SalaryReadOnlyDTO> findAllSalaries(int year) throws EntityNotFoundException {
         Long userId = loggedInUser.getUserId();
         LOGGER.info("Find salary by id: " + userId);
-        List<Salary> salaries = salaryRepository.findSalaryByUserId(userId, 2025);
+        List<Salary> salaries = salaryRepository.findSalaryByUserId(userId, year);
         List<SalaryReadOnlyDTO> salaryReadOnlyDTO = salaries.stream().map(mapper::mapToSalaryReadOnlyDTO).toList();
         if (salaries.isEmpty()) {
             LOGGER.info("No salaries found for id: " + userId);

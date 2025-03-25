@@ -13,6 +13,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.time.Year;
 import java.util.List;
 
 @Path(("/salaries"))
@@ -25,8 +26,11 @@ public class SalaryResource {
     SalaryService salaryService;
 
     @GET
-    public Response getSalary() throws EntityNotFoundException {
-    List<SalaryReadOnlyDTO> salary = salaryService.findAllSalaries();
+    public Response getSalaries(@QueryParam("year") int year) throws EntityNotFoundException {
+        if (year <= 0) {
+            year = Year.now().getValue();
+        }
+        List<SalaryReadOnlyDTO> salary = salaryService.findAllSalaries(year);
         return Response.status(Response.Status.OK)
                 .entity(salary)
                 .build();
@@ -52,7 +56,7 @@ public class SalaryResource {
     @PUT
     @Path("/{salaryId}")
     public Response updateSalary(@PathParam("salaryId") Long salaryId, SalaryUpdateRequestDTO salaryUpdateRequest) throws EntityNotFoundException {
-        SalaryReadOnlyDTO salaryReadOnlyDTO = salaryService.updateSalary(salaryId,salaryUpdateRequest);
+        SalaryReadOnlyDTO salaryReadOnlyDTO = salaryService.updateSalary(salaryId, salaryUpdateRequest);
         return Response.status((Response.Status.OK))
                 .entity(salaryReadOnlyDTO)
                 .build();

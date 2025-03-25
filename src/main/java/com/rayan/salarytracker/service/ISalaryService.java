@@ -10,9 +10,9 @@ import com.rayan.salarytracker.dto.salary.SalaryUpdateRequestDTO;
 import java.util.List;
 
 public interface ISalaryService {
-    List<SalaryReadOnlyDTO> findAllSalaries() throws EntityNotFoundException;
+    List<SalaryReadOnlyDTO> findAllSalaries(int year) throws EntityNotFoundException;
     SalaryReadOnlyDTO findSalaryById(Long salaryId) throws EntityNotFoundException;
     SalaryReadOnlyDTO createSalary(SalaryInsertDTO salaryInsertDTO) throws EntityInvalidArgumentsException, EntityAlreadyExistsException;
     SalaryReadOnlyDTO updateSalary(Long salaryId, SalaryUpdateRequestDTO salaryUpdateRequest) throws EntityNotFoundException;
-    public void deleteSalaryById(Long salaryId) throws EntityNotFoundException;
+    void deleteSalaryById(Long salaryId) throws EntityNotFoundException;
 }
